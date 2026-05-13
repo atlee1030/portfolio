@@ -212,9 +212,13 @@
 
       const updateMeta = () => {
         const activeWork = works[activeIndex];
+        const visualWorks = getVisualWorks();
+        const activeVisualIndex = visualWorks.indexOf(activeWork);
 
         works.forEach((work, index) => {
-          const distance = Math.abs(index - activeIndex);
+          const distance = isMobileLayout()
+            ? Math.abs(visualWorks.indexOf(work) - activeVisualIndex)
+            : Math.abs(index - activeIndex);
           work.classList.toggle("is-active", index === activeIndex);
           work.classList.toggle("is-near", distance === 1);
           work.classList.toggle("is-far", distance > 1);
@@ -242,6 +246,14 @@
       };
 
       const nudgeDial = (direction) => {
+        if (isMobileLayout()) {
+          const visualWorks = getVisualWorks();
+          const activeVisualIndex = visualWorks.indexOf(works[activeIndex]);
+          const targetVisualIndex = clamp(activeVisualIndex + direction, 0, visualWorks.length - 1);
+          moveDial(works.indexOf(visualWorks[targetVisualIndex]));
+          return;
+        }
+
         moveDial(activeIndex + direction);
       };
 
@@ -274,7 +286,7 @@
           event.preventDefault();
           if (wheelLock) return;
           const wheelDelta = isMobileLayout() ? event.deltaX || event.deltaY : event.deltaY;
-          const wheelThreshold = isMobileLayout() ? 80 : 95;
+          const wheelThreshold = isMobileLayout() ? 150 : 95;
           wheelDeltaTotal += wheelDelta;
 
           if (Math.abs(wheelDeltaTotal) < wheelThreshold) return;
@@ -284,7 +296,7 @@
           wheelDeltaTotal = 0;
           window.setTimeout(() => {
             wheelLock = false;
-          }, 880);
+          }, isMobileLayout() ? 1180 : 880);
         },
         { passive: false },
       );
@@ -317,7 +329,9 @@
         dial.releasePointerCapture(event.pointerId);
         track.classList.remove("is-dragging");
 
-        if (Math.abs(dragDelta) > getItemStep() * 0.42) {
+        const dragThreshold = getItemStep() * (isMobileLayout() ? 0.58 : 0.42);
+
+        if (Math.abs(dragDelta) > dragThreshold) {
           nudgeDial(dragDelta < 0 ? 1 : -1);
         } else {
           moveDial(activeIndex);
