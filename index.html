@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portfolio</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script>
+      (function (d) {
+        var config = {
+            kitId: "ufh5wxj",
+            scriptTimeout: 3000,
+            async: true,
+          },
+          h = d.documentElement,
+          t = setTimeout(function () {
+            h.className = h.className.replace(/\bwf-loading\b/g, "") + " wf-inactive";
+          }, config.scriptTimeout),
+          tk = d.createElement("script"),
+          f = false,
+          s = d.getElementsByTagName("script")[0],
+          a;
+        h.className += " wf-loading";
+        tk.src = "https://use.typekit.net/" + config.kitId + ".js";
+        tk.async = true;
+        tk.onload = tk.onreadystatechange = function () {
+          a = this.readyState;
+          if (f || (a && a != "complete" && a != "loaded")) return;
+          f = true;
+          clearTimeout(t);
+          try {
+            Typekit.load(config);
+          } catch (e) {}
+        };
+        s.parentNode.insertBefore(tk, s);
+      })(document);
+    </script>
+  </head>
+  <body>
+    <main class="portfolio" aria-label="Austin Lee portfolio">
+      <div class="portfolio-stage">
+        <img class="brand-mark" src="assets/intro-mark.png" alt="" aria-hidden="true" />
+
+        <section class="portfolio-layout" aria-label="Portfolio layout">
+          <header class="brand">
+            <h1>AUSTIN LEE</h1>
+            <p>Graphic Designer / Photographer</p>
+          </header>
+
+          <section class="right-column" aria-label="Navigation and work details">
+            <nav class="site-nav" aria-label="Primary navigation">
+              <a href="work.html">Work</a>
+              <a href="about.html">About</a>
+              <a href="contact.html">Contact</a>
+            </nav>
+
+            <section class="about-copy" id="about" aria-label="About Austin Lee">
+              <p>
+                An individual should be able to view design with indifference, and in doing so,
+                be able to distinguish whether they find it satisfying or not.
+              </p>
+              <p>
+                A designer is recognized for their ability to create universally appealing designs,
+                and it is through repeated challenges that what is achieved by chance becomes art.
+              </p>
+            </section>
+
+            <section class="work-purpose" aria-label="Work purpose">
+              <p id="work-purpose-text">Commercial, Poster</p>
+            </section>
+          </section>
+
+          <section class="work-type" aria-label="Work category">
+            <p id="graphic-type">Graphic Design</p>
+            <p id="photograph-type">Photograph</p>
+          </section>
+
+          <section class="view-mode" aria-label="View mode">
+            <button type="button" aria-pressed="true">Vertical</button>
+            <button type="button" aria-pressed="false">Horizontal</button>
+          </section>
+
+          <p class="copyright">Austin Lee Portfolio. 2026</p>
+
+          <section class="work-dial" id="work" aria-label="Selected works" tabindex="0">
+            <div class="work-track">
+              <img
+                src="assets/works/kinsushi-poster.png"
+                alt="Kin Sushi commercial poster"
+                data-category="Graphic Design"
+                data-purpose="Commercial, Poster"
+              />
+              <img
+                src="assets/works/observation.jpg"
+                alt="Observation book cover"
+                data-category="Graphic Design"
+                data-purpose="Book Cover"
+                data-selected="true"
+              />
+              <img
+                src="assets/works/research-poster.png"
+                alt="Research poster"
+                data-category="Graphic Design"
+                data-purpose="Poster"
+              />
+              <img
+                src="assets/works/the-infinity-loop.jpg"
+                alt="The Infinity Loop research information design"
+                data-category="Graphic Design"
+                data-purpose="Research, Information"
+              />
+              <img
+                src="assets/works/ttc-brochure.jpg"
+                alt="TTC brochure"
+                data-category="Graphic Design"
+                data-purpose="Brochure"
+              />
+            </div>
+          </section>
+        </section>
+      </div>
+    </main>
+    <script>
+      const setStageScale = () => {
+        const containScale = Math.min(window.innerWidth / 1440, window.innerHeight / 1024);
+        const isDesktop = window.innerWidth >= 760;
+        const scale = isDesktop ? 1 : 1;
+        const stageWidth = isDesktop ? window.innerWidth : window.innerWidth;
+        const stageHeight = isDesktop ? window.innerHeight : window.innerHeight;
+        const fluid = isDesktop ? clamp(window.innerWidth / 1440, 0.9, 1.12) : clamp(window.innerWidth / 390, 0.85, 1.05);
+        const brandScale = isDesktop
+          ? clamp(window.innerWidth / 1440, 0.78, 1.35)
+          : clamp(window.innerWidth / 390, 0.82, 1);
+        const columnWidth = stageWidth / 3;
+        const workWidth = isDesktop
+          ? clamp(columnWidth * 0.55, 170, 300)
+          : clamp(window.innerWidth * 0.52, 150, 220);
+        const workGap = isDesktop ? clamp(window.innerHeight * 0.075, 45, 130) : clamp(window.innerHeight * 0.055, 28, 56);
+        const gridScale = stageWidth / 1440;
+        document.documentElement.style.setProperty("--stage-scale", scale.toString());
+        document.documentElement.style.setProperty("--stage-width", `${stageWidth}px`);
+        document.documentElement.style.setProperty("--stage-height", `${stageHeight}px`);
+        document.documentElement.style.setProperty("--active-y", `${stageHeight * 0.5}px`);
+        document.documentElement.style.setProperty("--fluid", fluid.toString());
+        document.documentElement.style.setProperty("--brand-scale", brandScale.toString());
+        document.documentElement.style.setProperty("--grid-scale", gridScale.toString());
+        document.documentElement.style.setProperty("--work-width", `${workWidth}px`);
+        document.documentElement.style.setProperty("--work-gap", `${workGap}px`);
+      };
+
+      const portfolio = document.querySelector(".portfolio");
+      const dial = document.querySelector(".work-dial");
+      const track = document.querySelector(".work-track");
+      const works = Array.from(document.querySelectorAll(".work-track img"));
+      const purposeText = document.querySelector("#work-purpose-text");
+      const graphicType = document.querySelector("#graphic-type");
+      const photographType = document.querySelector("#photograph-type");
+
+      let activeIndex = Math.max(
+        0,
+        works.findIndex((work) => work.dataset.selected === "true"),
+      );
+      const INTRO_DELAY = 4300;
+      let dragStartY = 0;
+      let dragDelta = 0;
+      let isDragging = false;
+      let wheelLock = false;
+
+      const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+      const isMobileLayout = () => window.innerWidth < 760;
+
+      const getItemStep = () => {
+        const itemSize = isMobileLayout()
+          ? works[0]?.offsetWidth || 158
+          : works[0]?.offsetHeight || 236;
+        const trackStyle = window.getComputedStyle(track);
+        const trackGap = Number.parseFloat(
+          isMobileLayout() ? trackStyle.columnGap || trackStyle.gap : trackStyle.rowGap || trackStyle.gap,
+        ) || 35;
+        return itemSize + trackGap;
+      };
+
+      const getActiveLineY = () => {
+        const activeY = Number.parseFloat(
+          getComputedStyle(document.documentElement).getPropertyValue("--active-y"),
+        );
+        return activeY || 512;
+      };
+
+      const getDialOffset = (index) => {
+        const itemSize = isMobileLayout()
+          ? works[0]?.offsetWidth || 158
+          : works[0]?.offsetHeight || 236;
+        const activeLine = isMobileLayout() ? window.innerWidth / 2 : getActiveLineY();
+        return activeLine - (index * getItemStep() + itemSize / 2);
+      };
+
+      const updateMeta = () => {
+        const activeWork = works[activeIndex];
+
+        works.forEach((work, index) => {
+          const distance = Math.abs(index - activeIndex);
+          work.classList.toggle("is-active", index === activeIndex);
+          work.classList.toggle("is-near", distance === 1);
+          work.classList.toggle("is-far", distance > 1);
+          work.setAttribute("aria-current", index === activeIndex ? "true" : "false");
+        });
+
+        if (activeWork && purposeText) {
+          purposeText.textContent = activeWork.dataset.purpose;
+        }
+
+        if (activeWork && graphicType && photographType) {
+          const isGraphic = activeWork.dataset.category === "Graphic Design";
+          graphicType.classList.toggle("is-active", isGraphic);
+          photographType.classList.toggle("is-active", !isGraphic);
+        }
+      };
+
+      const moveDial = (index, options = {}) => {
+        activeIndex = clamp(index, 0, works.length - 1);
+        const offset = getDialOffset(activeIndex) + (options.delta || 0);
+        track.style.transform = isMobileLayout()
+          ? `translateX(${offset}px)`
+          : `translateY(${offset}px)`;
+        updateMeta();
+      };
+
+      const nudgeDial = (direction) => {
+        moveDial(activeIndex + direction);
+      };
+
+      const startDial = () => {
+        const startOffset = getDialOffset(activeIndex) - getItemStep() * 1.8;
+        track.style.transform = isMobileLayout()
+          ? `translateX(${startOffset}px)`
+          : `translateY(${startOffset}px)`;
+        updateMeta();
+
+        window.setTimeout(() => {
+          portfolio.classList.add("is-dial-ready");
+          moveDial(activeIndex);
+        }, INTRO_DELAY);
+      };
+
+      setStageScale();
+      window.addEventListener("resize", () => {
+        setStageScale();
+        moveDial(activeIndex);
+      });
+
+      portfolio.addEventListener(
+        "wheel",
+        (event) => {
+          event.preventDefault();
+          if (wheelLock) return;
+          wheelLock = true;
+          const wheelDelta = isMobileLayout() ? event.deltaX || event.deltaY : event.deltaY;
+          nudgeDial(wheelDelta > 0 ? 1 : -1);
+          window.setTimeout(() => {
+            wheelLock = false;
+          }, 520);
+        },
+        { passive: false },
+      );
+
+      dial.addEventListener("pointerdown", (event) => {
+        isDragging = true;
+        dragStartY = isMobileLayout() ? event.clientX : event.clientY;
+        dragDelta = 0;
+        dial.setPointerCapture(event.pointerId);
+        track.classList.add("is-dragging");
+      });
+
+      dial.addEventListener("pointermove", (event) => {
+        if (!isDragging) return;
+        const scale = Number.parseFloat(
+          getComputedStyle(document.documentElement).getPropertyValue("--stage-scale"),
+        ) || 1;
+        const pointerPosition = isMobileLayout() ? event.clientX : event.clientY;
+        dragDelta = (pointerPosition - dragStartY) / scale;
+        moveDial(activeIndex, { delta: dragDelta });
+      });
+
+      dial.addEventListener("pointerup", (event) => {
+        if (!isDragging) return;
+        isDragging = false;
+        dial.releasePointerCapture(event.pointerId);
+        track.classList.remove("is-dragging");
+
+        if (Math.abs(dragDelta) > getItemStep() * 0.25) {
+          nudgeDial(dragDelta < 0 ? 1 : -1);
+        } else {
+          moveDial(activeIndex);
+        }
+      });
+
+      dial.addEventListener("pointercancel", () => {
+        if (!isDragging) return;
+        isDragging = false;
+        track.classList.remove("is-dragging");
+        moveDial(activeIndex);
+      });
+
+      dial.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowDown") {
+          event.preventDefault();
+          nudgeDial(1);
+        }
+
+        if (event.key === "ArrowUp") {
+          event.preventDefault();
+          nudgeDial(-1);
+        }
+      });
+
+      works.forEach((work, index) => {
+        work.addEventListener("click", () => {
+          moveDial(index);
+          dial.focus();
+        });
+      });
+
+      startDial();
+    </script>
+  </body>
+</html>
