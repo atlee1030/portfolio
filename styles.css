@@ -1,5 +1,6 @@
 :root {
   --fluid: 1;
+  --mobile-scale: 1;
   --brand-scale: 1;
   --grid-scale: 1;
   --stage-scale: 1;
@@ -354,9 +355,9 @@ button {
   }
 
   .portfolio.is-intro-complete .brand-mark {
-    top: 22px;
-    left: 32px;
-    width: calc(36px * var(--fluid));
+    top: calc(28px * var(--mobile-scale));
+    left: calc(32px * var(--mobile-scale));
+    width: calc(28px * var(--mobile-scale));
     opacity: 1;
     animation: none !important;
     transform: translate(0, 0);
@@ -367,44 +368,44 @@ button {
   }
 
   .brand {
-    top: 31px;
-    left: 78px;
+    top: calc(31px * var(--mobile-scale));
+    left: calc(68px * var(--mobile-scale));
   }
 
   .brand h1 {
-    font-size: calc(22px * var(--brand-scale));
+    font-size: calc(18px * var(--mobile-scale));
   }
 
   .brand p {
-    margin-top: calc(3px * var(--brand-scale));
-    font-size: calc(9.5px * var(--brand-scale));
+    margin-top: calc(2px * var(--mobile-scale));
+    font-size: calc(7.5px * var(--mobile-scale));
   }
 
   .right-column {
-    top: 32px;
-    right: 24px;
+    top: calc(34px * var(--mobile-scale));
+    right: calc(24px * var(--mobile-scale));
     left: auto;
-    width: clamp(112px, calc(100% - 280px), 170px);
+    width: clamp(124px, calc(100% - 248px), 160px);
     height: auto;
   }
 
   .site-nav {
     top: 0;
     width: 100%;
-    font-size: calc(12px * var(--fluid));
+    font-size: calc(10.5px * var(--mobile-scale));
   }
 
   .about-copy {
     display: block;
-    top: 88px;
+    top: calc(76px * var(--mobile-scale));
     left: 0;
     width: 100%;
-    font-size: calc(9.5px * var(--fluid));
-    line-height: 1.08;
+    font-size: calc(8px * var(--mobile-scale));
+    line-height: 1.12;
   }
 
   .about-copy p {
-    margin-bottom: calc(18px * var(--fluid));
+    margin-bottom: calc(14px * var(--mobile-scale));
   }
 
   .work-dial {
@@ -451,19 +452,19 @@ button {
 
   .work-type {
     top: auto;
-    bottom: calc(32px + env(safe-area-inset-bottom));
-    left: 32px;
-    font-size: calc(12.5px * var(--fluid));
+    bottom: calc(32px * var(--mobile-scale) + env(safe-area-inset-bottom));
+    left: calc(32px * var(--mobile-scale));
+    font-size: calc(12px * var(--mobile-scale));
   }
 
   .work-purpose {
     position: fixed;
     top: auto;
-    right: 32px;
-    bottom: calc(32px + env(safe-area-inset-bottom));
+    right: calc(32px * var(--mobile-scale));
+    bottom: calc(32px * var(--mobile-scale) + env(safe-area-inset-bottom));
     left: auto;
     width: 150px;
-    font-size: calc(12.5px * var(--fluid));
+    font-size: calc(12px * var(--mobile-scale));
     text-align: right;
   }
 
@@ -485,9 +486,9 @@ button {
   }
 
   to {
-    top: 22px;
-    left: 32px;
-    width: calc(36px * var(--fluid));
+    top: calc(28px * var(--mobile-scale));
+    left: calc(32px * var(--mobile-scale));
+    width: calc(28px * var(--mobile-scale));
     transform: translate(0, 0);
   }
 }

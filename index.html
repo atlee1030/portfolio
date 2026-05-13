@@ -128,13 +128,14 @@
         const stageWidth = isDesktop ? window.innerWidth : window.innerWidth;
         const stageHeight = isDesktop ? window.innerHeight : window.innerHeight;
         const fluid = isDesktop ? clamp(window.innerWidth / 1440, 0.9, 1.12) : clamp(window.innerWidth / 390, 0.85, 1.05);
+        const mobileScale = clamp(Math.min(window.innerWidth / 393, window.innerHeight / 852), 0.78, 1);
         const brandScale = isDesktop
           ? clamp(window.innerWidth / 1440, 0.78, 1.35)
-          : clamp(window.innerWidth / 390, 0.82, 1);
+          : mobileScale;
         const columnWidth = stageWidth / 3;
         const workWidth = isDesktop
           ? clamp(columnWidth * 0.55, 170, 300)
-          : clamp(window.innerWidth * 0.54, 200, 280);
+          : clamp(Math.min(window.innerWidth * 0.54, window.innerHeight * 0.33), 165, 280);
         const workGap = isDesktop ? clamp(window.innerHeight * 0.075, 45, 130) : clamp(window.innerWidth * 0.045, 14, 24);
         const gridScale = stageWidth / 1440;
         document.documentElement.style.setProperty("--stage-scale", scale.toString());
@@ -142,6 +143,7 @@
         document.documentElement.style.setProperty("--stage-height", `${stageHeight}px`);
         document.documentElement.style.setProperty("--active-y", `${stageHeight * 0.5}px`);
         document.documentElement.style.setProperty("--fluid", fluid.toString());
+        document.documentElement.style.setProperty("--mobile-scale", mobileScale.toString());
         document.documentElement.style.setProperty("--brand-scale", brandScale.toString());
         document.documentElement.style.setProperty("--grid-scale", gridScale.toString());
         document.documentElement.style.setProperty("--work-width", `${workWidth}px`);
