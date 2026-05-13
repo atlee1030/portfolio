@@ -134,8 +134,8 @@
         const columnWidth = stageWidth / 3;
         const workWidth = isDesktop
           ? clamp(columnWidth * 0.55, 170, 300)
-          : clamp(window.innerWidth * 0.52, 150, 220);
-        const workGap = isDesktop ? clamp(window.innerHeight * 0.075, 45, 130) : clamp(window.innerHeight * 0.055, 28, 56);
+          : clamp(window.innerWidth * 0.54, 200, 280);
+        const workGap = isDesktop ? clamp(window.innerHeight * 0.075, 45, 130) : clamp(window.innerWidth * 0.045, 14, 24);
         const gridScale = stageWidth / 1440;
         document.documentElement.style.setProperty("--stage-scale", scale.toString());
         document.documentElement.style.setProperty("--stage-width", `${stageWidth}px`);
@@ -161,13 +161,25 @@
         works.findIndex((work) => work.dataset.selected === "true"),
       );
       const INTRO_DELAY = 4300;
+      const INTRO_COMPLETE_DELAY = 4700;
       let dragStartY = 0;
       let dragDelta = 0;
       let isDragging = false;
+      let didDrag = false;
       let wheelLock = false;
+      let wheelDeltaTotal = 0;
 
       const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
       const isMobileLayout = () => window.innerWidth < 760;
+      const getVisualWorks = () => {
+        if (!isMobileLayout()) return works;
+
+        return [...works].sort((a, b) => {
+          const orderA = Number.parseInt(window.getComputedStyle(a).order, 10) || 0;
+          const orderB = Number.parseInt(window.getComputedStyle(b).order, 10) || 0;
+          return orderA - orderB;
+        });
+      };
 
       const getItemStep = () => {
         const itemSize = isMobileLayout()
@@ -191,8 +203,9 @@
         const itemSize = isMobileLayout()
           ? works[0]?.offsetWidth || 158
           : works[0]?.offsetHeight || 236;
+        const visualIndex = getVisualWorks().indexOf(works[index]);
         const activeLine = isMobileLayout() ? window.innerWidth / 2 : getActiveLineY();
-        return activeLine - (index * getItemStep() + itemSize / 2);
+        return activeLine - (visualIndex * getItemStep() + itemSize / 2);
       };
 
       const updateMeta = () => {
@@ -241,6 +254,10 @@
           portfolio.classList.add("is-dial-ready");
           moveDial(activeIndex);
         }, INTRO_DELAY);
+
+        window.setTimeout(() => {
+          portfolio.classList.add("is-intro-complete");
+        }, INTRO_COMPLETE_DELAY);
       };
 
       setStageScale();
@@ -254,18 +271,25 @@
         (event) => {
           event.preventDefault();
           if (wheelLock) return;
-          wheelLock = true;
           const wheelDelta = isMobileLayout() ? event.deltaX || event.deltaY : event.deltaY;
+          const wheelThreshold = isMobileLayout() ? 80 : 95;
+          wheelDeltaTotal += wheelDelta;
+
+          if (Math.abs(wheelDeltaTotal) < wheelThreshold) return;
+
+          wheelLock = true;
           nudgeDial(wheelDelta > 0 ? 1 : -1);
+          wheelDeltaTotal = 0;
           window.setTimeout(() => {
             wheelLock = false;
-          }, 520);
+          }, 880);
         },
         { passive: false },
       );
 
       dial.addEventListener("pointerdown", (event) => {
         isDragging = true;
+        didDrag = false;
         dragStartY = isMobileLayout() ? event.clientX : event.clientY;
         dragDelta = 0;
         dial.setPointerCapture(event.pointerId);
@@ -279,6 +303,9 @@
         ) || 1;
         const pointerPosition = isMobileLayout() ? event.clientX : event.clientY;
         dragDelta = (pointerPosition - dragStartY) / scale;
+        if (Math.abs(dragDelta) > 6) {
+          didDrag = true;
+        }
         moveDial(activeIndex, { delta: dragDelta });
       });
 
@@ -288,7 +315,7 @@
         dial.releasePointerCapture(event.pointerId);
         track.classList.remove("is-dragging");
 
-        if (Math.abs(dragDelta) > getItemStep() * 0.25) {
+        if (Math.abs(dragDelta) > getItemStep() * 0.42) {
           nudgeDial(dragDelta < 0 ? 1 : -1);
         } else {
           moveDial(activeIndex);
@@ -316,6 +343,7 @@
 
       works.forEach((work, index) => {
         work.addEventListener("click", () => {
+          if (didDrag) return;
           moveDial(index);
           dial.focus();
         });

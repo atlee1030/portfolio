@@ -89,6 +89,15 @@ button {
     intro-mark-dock 1.2s cubic-bezier(0.76, 0, 0.24, 1) 3.3s forwards;
 }
 
+.portfolio.is-intro-complete .brand-mark {
+  top: calc(22px + (4px * var(--brand-scale)));
+  left: 24px;
+  width: calc(37px * var(--brand-scale));
+  opacity: 1;
+  animation: none;
+  transform: translate(0, 0);
+}
+
 .portfolio-layout {
   position: absolute;
   inset: 0;
@@ -96,11 +105,16 @@ button {
   animation: layout-appear 0.5s ease-out 4.15s forwards;
 }
 
+.portfolio.is-intro-complete .portfolio-layout {
+  opacity: 1;
+  animation: none;
+}
+
 .brand {
   position: absolute;
   z-index: 20;
-  top: 28px;
-  left: 76px;
+  top: calc(22px + (6px * var(--brand-scale)));
+  left: calc(24px + (47px * var(--brand-scale)));
 }
 
 .brand h1 {
@@ -310,9 +324,9 @@ button {
   }
 
   to {
-    top: 22px;
+    top: calc(22px + (4px * var(--brand-scale)));
     left: 24px;
-    width: calc(38px * var(--fluid));
+    width: calc(37px * var(--brand-scale));
     transform: translate(0, 0);
   }
 }
@@ -324,6 +338,11 @@ button {
 }
 
 @media (max-width: 759px) {
+  .portfolio,
+  .portfolio-stage {
+    background: #e6e6e6;
+  }
+
   body {
     overflow: hidden;
   }
@@ -334,13 +353,22 @@ button {
       intro-mark-dock-mobile 1s cubic-bezier(0.76, 0, 0.24, 1) 2.8s forwards;
   }
 
+  .portfolio.is-intro-complete .brand-mark {
+    top: 22px;
+    left: 32px;
+    width: calc(36px * var(--fluid));
+    opacity: 1;
+    animation: none !important;
+    transform: translate(0, 0);
+  }
+
   .portfolio-layout {
     animation: layout-appear 0.45s ease-out 3.55s forwards;
   }
 
   .brand {
-    top: 24px;
-    left: 72px;
+    top: 31px;
+    left: 78px;
   }
 
   .brand h1 {
@@ -353,58 +381,98 @@ button {
   }
 
   .right-column {
-    top: 82px;
-    left: 20px;
-    width: calc(100% - 40px);
+    top: 32px;
+    right: 24px;
+    left: auto;
+    width: clamp(112px, calc(100% - 280px), 170px);
     height: auto;
   }
 
   .site-nav {
     top: 0;
     width: 100%;
-    font-size: calc(14px * var(--fluid));
+    font-size: calc(12px * var(--fluid));
   }
 
   .about-copy {
-    display: none;
+    display: block;
+    top: 88px;
+    left: 0;
+    width: 100%;
+    font-size: calc(9.5px * var(--fluid));
+    line-height: 1.08;
+  }
+
+  .about-copy p {
+    margin-bottom: calc(18px * var(--fluid));
   }
 
   .work-dial {
-    left: 50%;
-    width: calc(var(--work-width) + 18px);
+    top: calc(var(--stage-height) * 0.3474);
+    left: 0;
+    width: 100%;
+    height: calc(var(--work-width) * 1.4937);
+    overflow: visible;
+    transform: none;
+  }
+
+  .work-track {
+    width: max-content;
+    height: 100%;
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .work-track img {
+    flex: 0 0 auto;
+    width: var(--work-width);
+    height: 100%;
+  }
+
+  .work-track img:nth-child(1) {
+    order: 3;
+  }
+
+  .work-track img:nth-child(2) {
+    order: 2;
+  }
+
+  .work-track img:nth-child(3) {
+    order: 1;
+  }
+
+  .work-track img:nth-child(4) {
+    order: 4;
+  }
+
+  .work-track img:nth-child(5) {
+    order: 5;
   }
 
   .work-type {
     top: auto;
-    bottom: 72px;
-    left: 20px;
-    font-size: calc(12px * var(--fluid));
+    bottom: calc(32px + env(safe-area-inset-bottom));
+    left: 32px;
+    font-size: calc(12.5px * var(--fluid));
   }
 
   .work-purpose {
+    position: fixed;
     top: auto;
-    right: 20px;
-    bottom: 72px;
+    right: 32px;
+    bottom: calc(32px + env(safe-area-inset-bottom));
     left: auto;
-    font-size: calc(12px * var(--fluid));
+    width: 150px;
+    font-size: calc(12.5px * var(--fluid));
+    text-align: right;
   }
 
   .view-mode {
-    bottom: 24px;
-    left: 20px;
-    gap: 16px;
-  }
-
-  .view-mode button {
-    font-size: calc(12px * var(--fluid));
+    display: none;
   }
 
   .copyright {
-    right: 20px;
-    bottom: 24px;
-    max-width: 140px;
-    font-size: calc(10px * var(--fluid));
-    text-align: right;
+    display: none;
   }
 }
 
@@ -418,8 +486,8 @@ button {
 
   to {
     top: 22px;
-    left: 20px;
-    width: calc(38px * var(--fluid));
+    left: 32px;
+    width: calc(36px * var(--fluid));
     transform: translate(0, 0);
   }
 }
